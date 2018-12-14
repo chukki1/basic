@@ -24,10 +24,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'reorder_level')->textInput() ?>
 
-    <?= $form->field($model, 're')->textInput() ?>
-
-    <?= $form->field($model, 'subId')->textInput(['maxlength' => true]) ?>
-
+    
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'promotion')->textInput(['maxlength' => true]) ?>

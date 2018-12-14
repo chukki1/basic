@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Bill;
-use app\models\BillSearch;
+use app\models\PoItem;
+use app\models\PoItemSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BillController implements the CRUD actions for Bill model.
+ * PoItemController implements the CRUD actions for PoItem model.
  */
-class BillController extends Controller
+class PoItemController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class BillController extends Controller
     }
 
     /**
-     * Lists all Bill models.
+     * Lists all PoItem models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BillSearch();
+        $searchModel = new PoItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,8 +45,8 @@ class BillController extends Controller
     }
 
     /**
-     * Displays a single Bill model.
-     * @param string $id
+     * Displays a single PoItem model.
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -58,16 +58,16 @@ class BillController extends Controller
     }
 
     /**
-     * Creates a new Bill model.
+     * Creates a new PoItem model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Bill();
+        $model = new PoItem();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->Bill_No]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -76,9 +76,9 @@ class BillController extends Controller
     }
 
     /**
-     * Updates an existing Bill model.
+     * Updates an existing PoItem model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -87,7 +87,7 @@ class BillController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->Bill_No]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -96,9 +96,9 @@ class BillController extends Controller
     }
 
     /**
-     * Deletes an existing Bill model.
+     * Deletes an existing PoItem model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -110,15 +110,15 @@ class BillController extends Controller
     }
 
     /**
-     * Finds the Bill model based on its primary key value.
+     * Finds the PoItem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Bill the loaded model
+     * @param integer $id
+     * @return PoItem the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Bill::findOne($id)) !== null) {
+        if (($model = PoItem::findOne($id)) !== null) {
             return $model;
         }
 

@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Products;
+use app\models\Receipt;
 
 /**
- * ProcuctsSearch represents the model behind the search form of `app\models\Products`.
+ * ReceiptSearch represents the model behind the search form of `app\models\Receipt`.
  */
-class ProcuctsSearch extends Products
+class ReceiptSearch extends Receipt
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class ProcuctsSearch extends Products
     public function rules()
     {
         return [
-            [['code', 'name', 'subId', 'description', 'promotion', 'supplierName'], 'safe'],
-            [['price', 'available_Qty', 'reorder_level', 're'], 'integer'],
+            [['id', 'product_it_no', 'receiptNo_id'], 'integer'],
+            [['Product_Name'], 'safe'],
+            [['Price', 'Quantity', 'Discount', 'Total_Discount', 'Total'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class ProcuctsSearch extends Products
      */
     public function search($params)
     {
-        $query = Products::find();
+        $query = Receipt::find();
 
         // add conditions that should always apply here
 
@@ -59,18 +60,17 @@ class ProcuctsSearch extends Products
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'price' => $this->price,
-            'available_Qty' => $this->available_Qty,
-            'reorder_level' => $this->reorder_level,
-            're' => $this->re,
+            'id' => $this->id,
+            'product_it_no' => $this->product_it_no,
+            'Price' => $this->Price,
+            'Quantity' => $this->Quantity,
+            'Discount' => $this->Discount,
+            'Total_Discount' => $this->Total_Discount,
+            'Total' => $this->Total,
+            'receiptNo_id' => $this->receiptNo_id,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'subId', $this->subId])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'promotion', $this->promotion])
-            ->andFilterWhere(['like', 'supplierName', $this->supplierName]);
+        $query->andFilterWhere(['like', 'Product_Name', $this->Product_Name]);
 
         return $dataProvider;
     }

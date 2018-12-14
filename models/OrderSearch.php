@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Bill;
+use app\models\Order;
 
 /**
- * BillSearch represents the model behind the search form of `app\models\Bill`.
+ * OrderSearch represents the model behind the search form of `app\models\Order`.
  */
-class BillSearch extends Bill
+class OrderSearch extends Order
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class BillSearch extends Bill
     public function rules()
     {
         return [
-            [['Bill_No', 'code', 'Product_Name'], 'safe'],
-            [['price', 'Quantity', 'Discount', 'Total_Discount', 'Total'], 'integer'],
+            [['id'], 'integer'],
+            [['date'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class BillSearch extends Bill
      */
     public function search($params)
     {
-        $query = Bill::find();
+        $query = Order::find();
 
         // add conditions that should always apply here
 
@@ -59,16 +59,9 @@ class BillSearch extends Bill
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'price' => $this->price,
-            'Quantity' => $this->Quantity,
-            'Discount' => $this->Discount,
-            'Total_Discount' => $this->Total_Discount,
-            'Total' => $this->Total,
+            'id' => $this->id,
+            'date' => $this->date,
         ]);
-
-        $query->andFilterWhere(['like', 'Bill_No', $this->Bill_No])
-            ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'Product_Name', $this->Product_Name]);
 
         return $dataProvider;
     }

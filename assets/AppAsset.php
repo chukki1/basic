@@ -39,7 +39,7 @@ class AppAsset extends AssetBundle
         //'js/main.js',
         'js/bootstrap.min.js',
         'js/jquery-ui.min.js',
-        'js/jquery.min.js',
+        
         'js/raphael.min.js',
         'js/morris.min.js',
         'js/jquery.sparkline.min.js',
@@ -53,7 +53,7 @@ class AppAsset extends AssetBundle
         'js/jquery.slimscroll.min.js',
         'js/fastclick.js',
         'js/adminlte.min.js',
-        'js/dashboard2.js',
+       
         
         'js/demo.js',
     ];

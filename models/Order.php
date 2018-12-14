@@ -3,24 +3,23 @@
 namespace app\models;
 
 use Yii;
-
+use mdm\behaviors\ar\RelationTrait;
 /**
- * This is the model class for table "receiptno".
+ * This is the model class for table "order".
  *
  * @property int $id
- * @property int $receipt_no
  * @property string $date
  *
- * @property Receipt[] $receipts
+ * @property OrderItem[] $orderItems
  */
-class Receiptno extends \yii\db\ActiveRecord
+class Order extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'receiptno';
+        return 'order';
     }
 
     /**
@@ -29,8 +28,7 @@ class Receiptno extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['receipt_no', 'date'], 'required'],
-            [['receipt_no'], 'integer'],
+            [['date'], 'required'],
             [['date'], 'safe'],
         ];
     }
@@ -42,7 +40,6 @@ class Receiptno extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'receipt_no' => 'Receipt No',
             'date' => 'Date',
         ];
     }
@@ -50,8 +47,12 @@ class Receiptno extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReceipts()
+    public function getOrderItems()
     {
-        return $this->hasMany(Receipt::className(), ['receiptNo_id' => 'id']);
+        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+    }
+    public function setOrderItems($value)
+    {
+        $this->loadRelated('orderItems', $value);
     }
 }

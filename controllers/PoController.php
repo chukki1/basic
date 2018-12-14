@@ -3,16 +3,18 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Customer;
-use app\models\CustomerSearch;
+use app\models\Po;
+use app\models\PoItem;
+use app\models\PoSearch;
 use yii\web\Controller;
+
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CustomerController implements the CRUD actions for Customer model.
+ * PoController implements the CRUD actions for Po model.
  */
-class CustomerController extends Controller
+class PoController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +32,12 @@ class CustomerController extends Controller
     }
 
     /**
-     * Lists all Customer models.
+     * Lists all Po models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch();
+        $searchModel = new PoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +47,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Displays a single Customer model.
+     * Displays a single Po model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,25 +60,40 @@ class CustomerController extends Controller
     }
 
     /**
-     * Creates a new Customer model.
+     * Creates a new Po model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Customer();
+        $model = new Po();
+        $searchModel = new PoSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $model->PoItem = Yii::$app->request->post('PoItem', []);
+                if ($model->save()) {
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                $transaction->rollBack();
+            } catch (\Exception $ecx) {
+                $transaction->rollBack();
+                throw $ecx;
+            }
+        } else {
+            return $this->render('create', [
+                'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
-     * Updates an existing Customer model.
+     * Updates an existing Po model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +113,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Deletes an existing Customer model.
+     * Deletes an existing Po model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +127,15 @@ class CustomerController extends Controller
     }
 
     /**
-     * Finds the Customer model based on its primary key value.
+     * Finds the Po model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Customer the loaded model
+     * @return Po the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = Po::findOne($id)) !== null) {
             return $model;
         }
 

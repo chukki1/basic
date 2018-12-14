@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Products;
-use app\models\ProductsSearch;
+use app\models\Order;
+use app\models\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ProductsController implements the CRUD actions for Products model.
+ * OrderController implements the CRUD actions for Order model.
  */
-class ProductsController extends Controller
+class OrderController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class ProductsController extends Controller
     }
 
     /**
-     * Lists all Products models.
+     * Lists all Order models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProductsSearch();
+        $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,8 +45,8 @@ class ProductsController extends Controller
     }
 
     /**
-     * Displays a single Products model.
-     * @param string $id
+     * Displays a single Order model.
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -58,16 +58,27 @@ class ProductsController extends Controller
     }
 
     /**
-     * Creates a new Products model.
+     * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Products();
+        $model = new Order();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->code]);
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $model->orderItems = Yii::$app->request->post('OrderItem', []);
+                if ($model->save()) {
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                $transaction->rollBack();
+            } catch (\Exception $ecx) {
+                $transaction->rollBack();
+                throw $ecx;
+            }
         }
 
         return $this->render('create', [
@@ -76,9 +87,9 @@ class ProductsController extends Controller
     }
 
     /**
-     * Updates an existing Products model.
+     * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -87,7 +98,18 @@ class ProductsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->code]);
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $model->orderItems = Yii::$app->request->post('OrderItem', []);
+                if ($model->save()) {
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                $transaction->rollBack();
+            } catch (\Exception $ecx) {
+                $transaction->rollBack();
+                throw $ecx;
+            }
         }
 
         return $this->render('update', [
@@ -96,9 +118,9 @@ class ProductsController extends Controller
     }
 
     /**
-     * Deletes an existing Products model.
+     * Deletes an existing Order model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -110,15 +132,15 @@ class ProductsController extends Controller
     }
 
     /**
-     * Finds the Products model based on its primary key value.
+     * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Products the loaded model
+     * @param integer $id
+     * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Products::findOne($id)) !== null) {
+        if (($model = Order::findOne($id)) !== null) {
             return $model;
         }
 

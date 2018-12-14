@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'available_Qty',
             'reorder_level',
             're',
-            'subId',
+            
             'description',
             'promotion',
             'supplierName',

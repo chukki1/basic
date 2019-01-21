@@ -15,15 +15,25 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'Id') ?>
 
     <?= $form->field($model, 'Name') ?>
 
     <?= $form->field($model, 'Email') ?>
 
+    <?= $form->field($model, 'Password') ?>
+
     <?= $form->field($model, 'NIC') ?>
 
-    <?= $form->field($model, 'PhoneNO') ?>
+    <?php // echo $form->field($model, 'Reemed_points') ?>
+
+    <?php // echo $form->field($model, 'Earned-point') ?>
+
+    <?php // echo $form->field($model, 'Point_balance') ?>
+
+    <?php // echo $form->field($model, 'Mobile_No') ?>
+
+    <?php // echo $form->field($model, 'User_type_Id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

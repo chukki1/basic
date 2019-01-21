@@ -2,8 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use mdm\widgets\GridInput;
-use app\models\OrderItem;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
 /* @var $form yii\widgets\ActiveForm */
@@ -13,32 +12,32 @@ use app\models\OrderItem;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'date')->textInput() ?>
+    <?= $form->field($model, 'QR_code')->textInput(['maxlength' => true]) ?>
 
-    <div class="forms">
-    <?=
-     Html :: submitButton ( $model -> isNewRecord ? ' Create ' : ' Update ' , [ ' class ' => $model -> isNewRecord ? ' Btn btn -success '   
-                    : ' btn btn-primary ' ])
-        ?>
-    </div>
-    <div class = "forms" >
-        <?=
-        GridInput::widget ([
-           
-            'allModels'=> $model->orderItems,
-            ' model '  =>  OrderItem :: className (),
-            ' form '  =>  $form ,
-            ' columns '  => [
-                [' class '=>' mdm\widgets\SerialColumn ' ],
-                ' product ' ,
-                ' qty ' ,
-                [' class '=>' mdm \ widgets \ButtonColumn ' ]
-            ],
-            ' hiddens ' => [
-                ' id '
-            ]
-        ])
-        ?>
+    <?= $form->field($model, 'item_name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'Quntity')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'Unit_Price')->textInput() ?>
+
+    <?= $form->field($model, 'Total_Price')->textInput() ?>
+
+    <?= $form->field($model, 'created_on')->textInput() ?>
+
+    <?= $form->field($model, 'issued_by')->textInput() ?>
+
+    <?= $form->field($model, 'created_by')->textInput() ?>
+
+    <?= $form->field($model, 'Invoice_Id')->textInput() ?>
+
+    <?= $form->field($model, 'Delevery_note_Id')->textInput() ?>
+
+    <?= $form->field($model, 'Customer_Id')->textInput() ?>
+
+    <?= $form->field($model, 'Cashier_Id')->textInput() ?>
+
+    <div class="form-group">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

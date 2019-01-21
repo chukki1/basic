@@ -9,14 +9,15 @@ use yii\widgets\DetailView;
 $this->title = $model->Name;
 $this->params['breadcrumbs'][] = ['label' => 'Customers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+\yii\web\YiiAsset::register($this);
 ?>
 <div class="customer-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Update', ['update', 'Id' => $model->Id, 'User_type_Id' => $model->User_type_Id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'Id' => $model->Id, 'User_type_Id' => $model->User_type_Id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -28,13 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            'Id',
             'Name',
             'Email:email',
+            'Password',
             'NIC',
-            'PhoneNO',
+            'Reemed_points',
+            'Earned-point',
+            'Point_balance',
+            'Mobile_No',
+            'User_type_Id',
         ],
     ]) ?>
 
 </div>
-

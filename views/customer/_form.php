@@ -6,25 +6,29 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Customer */
 /* @var $form yii\widgets\ActiveForm */
-?><div class="container">
-  <div class="row">
-    <div class="col-9">
-
-
+?>
 
 <div class="customer-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
-
     <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'Password')->passwordInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'NIC')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'PhoneNO')->textInput() ?>
+    <?= $form->field($model, 'Reemed_points')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'Earned-point')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'Point_balance')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'Mobile_No')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'User_type_Id')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -32,9 +36,4 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
-</div>
-
-
-</div>
-</div>
 </div>

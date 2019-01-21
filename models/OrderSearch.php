@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Order;
@@ -13,18 +12,19 @@ use app\models\Order;
 class OrderSearch extends Order
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['date'], 'safe'],
+            [['ID', 'Invoice_Id', 'Delevery_note_Id', 'Customer_Id', 'Cashier_Id'], 'integer'],
+            [['QR_code', 'item_name', 'Quntity', 'created_on', 'issued_by', 'created_by'], 'safe'],
+            [['Unit_Price', 'Total_Price'], 'number'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function scenarios()
     {
@@ -59,9 +59,21 @@ class OrderSearch extends Order
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'date' => $this->date,
+            'ID' => $this->ID,
+            'Unit_Price' => $this->Unit_Price,
+            'Total_Price' => $this->Total_Price,
+            'created_on' => $this->created_on,
+            'issued_by' => $this->issued_by,
+            'created_by' => $this->created_by,
+            'Invoice_Id' => $this->Invoice_Id,
+            'Delevery_note_Id' => $this->Delevery_note_Id,
+            'Customer_Id' => $this->Customer_Id,
+            'Cashier_Id' => $this->Cashier_Id,
         ]);
+
+        $query->andFilterWhere(['like', 'QR_code', $this->QR_code])
+            ->andFilterWhere(['like', 'item_name', $this->item_name])
+            ->andFilterWhere(['like', 'Quntity', $this->Quntity]);
 
         return $dataProvider;
     }

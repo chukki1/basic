@@ -15,7 +15,7 @@ use yii\filters\VerbFilter;
 class OrderController extends Controller
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors()
     {
@@ -46,14 +46,18 @@ class OrderController extends Controller
 
     /**
      * Displays a single Order model.
-     * @param integer $id
+     * @param integer $ID
+     * @param integer $Invoice_Id
+     * @param integer $Delevery_note_Id
+     * @param integer $Customer_Id
+     * @param integer $Cashier_Id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($ID, $Invoice_Id, $Delevery_note_Id, $Customer_Id, $Cashier_Id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($ID, $Invoice_Id, $Delevery_note_Id, $Customer_Id, $Cashier_Id),
         ]);
     }
 
@@ -67,18 +71,7 @@ class OrderController extends Controller
         $model = new Order();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $model->orderItems = Yii::$app->request->post('OrderItem', []);
-                if ($model->save()) {
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-                $transaction->rollBack();
-            } catch (\Exception $ecx) {
-                $transaction->rollBack();
-                throw $ecx;
-            }
+            return $this->redirect(['view', 'ID' => $model->ID, 'Invoice_Id' => $model->Invoice_Id, 'Delevery_note_Id' => $model->Delevery_note_Id, 'Customer_Id' => $model->Customer_Id, 'Cashier_Id' => $model->Cashier_Id]);
         }
 
         return $this->render('create', [
@@ -89,27 +82,20 @@ class OrderController extends Controller
     /**
      * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param integer $ID
+     * @param integer $Invoice_Id
+     * @param integer $Delevery_note_Id
+     * @param integer $Customer_Id
+     * @param integer $Cashier_Id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($ID, $Invoice_Id, $Delevery_note_Id, $Customer_Id, $Cashier_Id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($ID, $Invoice_Id, $Delevery_note_Id, $Customer_Id, $Cashier_Id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $model->orderItems = Yii::$app->request->post('OrderItem', []);
-                if ($model->save()) {
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-                $transaction->rollBack();
-            } catch (\Exception $ecx) {
-                $transaction->rollBack();
-                throw $ecx;
-            }
+            return $this->redirect(['view', 'ID' => $model->ID, 'Invoice_Id' => $model->Invoice_Id, 'Delevery_note_Id' => $model->Delevery_note_Id, 'Customer_Id' => $model->Customer_Id, 'Cashier_Id' => $model->Cashier_Id]);
         }
 
         return $this->render('update', [
@@ -120,13 +106,17 @@ class OrderController extends Controller
     /**
      * Deletes an existing Order model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param integer $ID
+     * @param integer $Invoice_Id
+     * @param integer $Delevery_note_Id
+     * @param integer $Customer_Id
+     * @param integer $Cashier_Id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($ID, $Invoice_Id, $Delevery_note_Id, $Customer_Id, $Cashier_Id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($ID, $Invoice_Id, $Delevery_note_Id, $Customer_Id, $Cashier_Id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -134,13 +124,17 @@ class OrderController extends Controller
     /**
      * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param integer $ID
+     * @param integer $Invoice_Id
+     * @param integer $Delevery_note_Id
+     * @param integer $Customer_Id
+     * @param integer $Cashier_Id
      * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($ID, $Invoice_Id, $Delevery_note_Id, $Customer_Id, $Cashier_Id)
     {
-        if (($model = Order::findOne($id)) !== null) {
+        if (($model = Order::findOne(['ID' => $ID, 'Invoice_Id' => $Invoice_Id, 'Delevery_note_Id' => $Delevery_note_Id, 'Customer_Id' => $Customer_Id, 'Cashier_Id' => $Cashier_Id])) !== null) {
             return $model;
         }
 

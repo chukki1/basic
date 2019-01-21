@@ -25,7 +25,8 @@
         "wbraganca/yii2-dynamicform": "*",
         "mdmsoft/yii2-widgets": "~1.0",
         "mdmsoft/yii2-ar-behaviors": "~1.0",
-        "kartik-v/yii2-grid": "dev-master"
+        "kartik-v/yii2-grid": "dev-master",
+        "kartik-v/yii2-widget-select2": "@dev"
        
 
         

@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Customer;
@@ -13,18 +12,18 @@ use app\models\Customer;
 class CustomerSearch extends Customer
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'PhoneNO'], 'integer'],
-            [['Name', 'Email', 'NIC'], 'safe'],
+            [['Id', 'User_type_Id'], 'integer'],
+            [['Name', 'Email', 'Password', 'NIC', 'Reemed_points', 'Earned-point', 'Point_balance', 'Mobile_No'], 'safe'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function scenarios()
     {
@@ -59,13 +58,18 @@ class CustomerSearch extends Customer
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'PhoneNO' => $this->PhoneNO,
+            'Id' => $this->Id,
+            'User_type_Id' => $this->User_type_Id,
         ]);
 
         $query->andFilterWhere(['like', 'Name', $this->Name])
             ->andFilterWhere(['like', 'Email', $this->Email])
-            ->andFilterWhere(['like', 'NIC', $this->NIC]);
+            ->andFilterWhere(['like', 'Password', $this->Password])
+            ->andFilterWhere(['like', 'NIC', $this->NIC])
+            ->andFilterWhere(['like', 'Reemed_points', $this->Reemed_points])
+            ->andFilterWhere(['like', 'Earned-point', $this->Earned-point])
+            ->andFilterWhere(['like', 'Point_balance', $this->Point_balance])
+            ->andFilterWhere(['like', 'Mobile_No', $this->Mobile_No]);
 
         return $dataProvider;
     }

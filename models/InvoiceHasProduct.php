@@ -33,9 +33,7 @@ class InvoiceHasProduct extends \yii\db\ActiveRecord
         return [
             [['Invoice_Id', 'Product_Id', 'Discount', 'Total'], 'required'],
             [['Invoice_Id', 'Product_Id'], 'integer'],
-            [['Discount', 'Total'], 'number'],
-            [['Quantity'], 'string', 'max' => 45],
-            [['Invoice_Id', 'Product_Id'], 'unique', 'targetAttribute' => ['Invoice_Id', 'Product_Id']],
+            [['Discount', 'Total', 'Quantity'], 'number'],
             [['Invoice_Id'], 'exist', 'skipOnError' => true, 'targetClass' => Invoice::className(), 'targetAttribute' => ['Invoice_Id' => 'Id']],
         ];
     }

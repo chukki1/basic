@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\OrderDetails */
 
-$this->title = 'Update Order Details: ' . $model->order_Id;
+$this->title = 'Update Order Details: ' . $model->Id;
 $this->params['breadcrumbs'][] = ['label' => 'Order Details', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->order_Id, 'url' => ['view', 'id' => $model->order_Id]];
+$this->params['breadcrumbs'][] = ['label' => $model->Id, 'url' => ['view', 'id' => $model->Id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="order-details-update">

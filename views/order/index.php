@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
-
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -19,15 +18,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Order', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+   
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'filterModel' => $searchModel,
         'rowOptions' => function ($model, $key, $index, $grid) {
             return [
                 'style' => "cursor: pointer",
                 'id' => $model['ID'],
                 'onclick' => 'location.href="'.Yii::$app->urlManager->createUrl('order-details').'&scenario=Order&params="+($order_Id);',
+               
             ];  
         },
 

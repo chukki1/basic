@@ -11,6 +11,12 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\helpers\Url;
 use yii\db\Command;
+use app\models\ProductList;
+use app\models\Invoice;
+use app\models\InvoiceHasProduct;
+use yii\helpers\Json;
+use \DateTime;
+use Carbon\Carbon;
 
 class SiteController extends Controller
 {
@@ -63,22 +69,22 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-       
-       
+
+
         if (!Yii::$app->user->isGuest) {
-       // return $this->render('index');
-          $list = Yii::$app->db->createCommand("select Id,Name,Price from product")->queryAll();
-         
-          return $this->render('cashierDashboard',['list'=>$list]);
-        //  return $this->render('adminDashboard');
-        }
-        else{
-        return $this->redirect(['/user-management/auth/login']);
+            // return $this->render('index');
+
+            $list = Yii::$app->db->createCommand("select Id,Name,Price from product")->queryAll();
+
+            return $this->render('cashierDashboard', ['list' => $list]);
+            //return $this->render('adminDashboard');
+        } else {
+            return $this->redirect(['/user-management/auth/login']);
         }
     }
-    
-    
-   /**
+
+
+    /**
      * Login action.
      *
      * @return Response|string
@@ -129,13 +135,14 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
     public function actionCashierDashBoard()
     {
         $model = new InvoiceHasProduct();
         $list = Yii::$app->db->createCommand("select Id,Name,Price from product")->queryAll();
-         return $this->render('cashierDashboard',['list'=>$list]);
+        return $this->render('cashierDashboard', ['list' => $list]);
 
-      
+
     }
 
     /**
@@ -149,43 +156,96 @@ class SiteController extends Controller
     }
 
 
-    public function actionAdd(){
+    public function actionAdd()
+    {
         $id = $_POST['id'];
         $list = Yii::$app->db->createCommand("SELECT price,id
         FROM product 
         WHERE id = $id")->queryScalar();
-        echo $list;        
-    }
-
-    public function actionSave(){
-        $id = $_POST['id'];
-        $quantity=$_POST['quantity'];
-        $discount=$_POST['discount'];
-        $total=$_POST['total'];
-
-        $list = array();
-        $list[0] = $id;
-        $list[1] = $quantity;
-        $list[2] = $discount;
-        $list[3] = $total;
-        
         echo $list;
-
-        Yii::$app->db->createCommand("INSERT INTO `invoice_has_product`(`Product_Id`, `Quantity`, `Discount`, `Total`) VALUES ($id,$quantity,$discount,$total)");
-        
-        $list = Yii::$app->db->createCommand("SELECT * FROM invoice_has_product")->queryAll();
-        echo $list;      
     }
 
-    public function actionAddProduct(){
-        $list2=$this->con->prepare("INSERT INTO `invoice_has_product`(`Product_Id`, `Quantity`, `Discount`, `Total`) 
-        VALUES (?,?,?,?)");
+    public function actionSave()
+    {
+        // echo 'post';
+        // die;
+        $id = $_POST['id'];
+        $quantity = $_POST['quantity'];
+        $discount = $_POST['discount'];
+        $total = $_POST['total'];
+
+        $model = new ProductList();
+
+        $model->product_id = $id;
+        $model->quantity = $quantity;
+        $model->Discount = $discount;
+        $model->Total = $total;
+
+        if ($model->save()) {
+            $list = Yii::$app->db->createCommand("SELECT PL.*,P.Name 
+            FROM product_list PL
+            INNER JOIN product P ON P.Id = PL.product_id")->queryAll();
+            echo json::encode($list);
+        } else {
+            print_r($id . '-' . $quantity . '-' . $discount . '-' . $total);
+        }
+
     }
-    
-    
-  
+
+    public function actionRemove()
+    {
+        Yii::$app->db->createCommand("DELETE FROM `product_list`order by Id desc limit 1")->execute();
+        $list = Yii::$app->db->createCommand("SELECT PL.*,P.Name 
+            FROM product_list PL
+            INNER JOIN product P ON P.Id = PL.product_id")->queryAll();
+        echo json::encode($list);
+    }
+
+    public function actionClear()
+    {
+        $invoice = new Invoice();
+        $invoice->Date = Carbon::now();
+        $invoice->Cashier_Id = $_POST['Cashier_Id'];
+        $Customer_Id = $_POST['Customer_Id'];
+        if ($Customer_Id != "" || $Customer_Id != null) {
+            $invoice->Customer_Id = $Customer_Id;
+        }
+        $invoice->Net_Total = $_POST['Net_Total'];
+        $invoice->No_Of_Items = $_POST['No_Of_Items'];
+        $invoice->Paid = $_POST['Paid'];
+        $invoice->Balance = $_POST['Balance'];
+        if ($invoice->save()) {
+            $invoiceId = $invoice->Id;
+            $invoice_products = ProductList::find()->all();
+            foreach ($invoice_products as $item) {
+                $invoiceHasProduct = new InvoiceHasProduct();
+                $invoiceHasProduct->Invoice_Id = $invoiceId;
+                $invoiceHasProduct->Product_Id = $item->product_id;
+                $invoiceHasProduct->Discount = $item->Discount;
+                $invoiceHasProduct->Total = $item->Total;
+                $invoiceHasProduct->Quantity = $item->quantity;
+                if (!$invoiceHasProduct->save()) {
+                    return json_encode(['error' => $invoiceHasProduct->getErrors()]);
+                }
+                ProductList::deleteAll();
+            }
+            return json_encode(['success' => true]);
+        } else {
+            return json_encode(['error' => $invoice->getErrors()]);
+        }
+    }
+
+    public function actionRefresh()
+    {
+        $list = Yii::$app->db->createCommand("SELECT PL.*,P.Name 
+            FROM product_list PL
+            INNER JOIN product P ON P.Id = PL.product_id")->queryAll();
+        echo json::encode($list);
+
+    }
+
+
 }
-
 
 
 

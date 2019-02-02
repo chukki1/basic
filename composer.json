@@ -24,7 +24,11 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "webvimark/module-user-management": "*",
-        "2amigos/yii2-date-picker-widget": "~1.0"
+        "2amigos/yii2-date-picker-widget": "~1.0",
+        "yii2learning/yii2-chart-builder": "*",
+        "wbraganca/yii2-dynamicform": "*",
+        "nesbot/carbon": "^2.11"
+      
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

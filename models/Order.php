@@ -14,7 +14,7 @@ use Yii;
  * @property string $QR_code
  *
  * @property Customer $customer
- * @property OrderDetails $orderDetails
+ * @property OrderDetails[] $orderDetails
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -67,6 +67,6 @@ class Order extends \yii\db\ActiveRecord
      */
     public function getOrderDetails()
     {
-        return $this->hasOne(OrderDetails::className(), ['order_Id' => 'ID']);
+        return $this->hasMany(OrderDetails::className(), ['order_Id' => 'ID']);
     }
 }

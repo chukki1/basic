@@ -68,12 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <input type="text" class="form-control" placeholder="Date" value="<?php echo date("Y-m-d"); ?>">
                     </div>
                     <div class="col-md-2">
-                        <input type="text" class="form-control" placeholder="Time" value="<?php echo time(" "); ?>">
+                        <input type="text" class="form-control" placeholder="Time">
                     </div>
                     <div class="col-md-2">
                         <input type="text" class="form-control" id="Customer_Id" placeholder="Customer Id">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <input type="text" class="form-control" id="Cashier_Id" placeholder="Cashier Id">
                     </div>
                 </div>
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-
+    
     <div class="row">
         <div class="col-md-8">
             <div class="bar" id="tableToPrint">
@@ -182,13 +182,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
 
-            <div class="col-sm-4">
-                <button class="button button5">Vouchers</button>
-                <button class="button button5">Credit</button>
-                <button class="button button5">Save & print</button>
-
-
-            </div>
+          
         </div>
 
 

@@ -136,14 +136,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionCashierDashBoard()
-    {
-        $model = new InvoiceHasProduct();
-        $list = Yii::$app->db->createCommand("select Id,Name,Price from product")->queryAll();
-        return $this->render('cashierDashboard', ['list' => $list]);
-
-
-    }
+  
 
     /**
      * Displays about page.

@@ -22,6 +22,15 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+
+    <style>
+    content{
+        height: 100%;
+    }
+    .sidebar{
+        height: 100%;
+    }
+    </style>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -58,14 +67,16 @@ AppAsset::register($this);
     NavBar::end();
     ?>
  
-
+ <div id="content">
 <div class=row>
-<div class=col-sm-2>
-<?= $this->render('_sidebar'); ?>
+    <div id="sidebar">
+    <div class=col-sm-2>
+    <?= $this->render('_sidebar'); ?>
     </div>
-    
+    </div>
     <div class="wrapper">
     <br><br><br>
+
     <div class=col-sm-3>  
     <div class="container">
         <?= Breadcrumbs::widget([
@@ -74,10 +85,12 @@ AppAsset::register($this);
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
-        </div>
-        </div>
-        </div>
+    </div>
 
+    </div>
+
+</div>
+</div>
 
 <?php $this->endBody() ?>
 </body>

@@ -71,7 +71,7 @@ class ProductController extends Controller
             return $this->redirect(['view', 'Id' => $model->Id, 'Subcatagory_Id' => $model->Subcatagory_Id]);
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
